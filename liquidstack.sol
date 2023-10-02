@@ -58,8 +58,17 @@ contract LiquidStaking {
 
     // This function should implement your reward calculation logic
     function calculateRewards(address user) internal view returns (uint256) {
-        // Implement your reward calculation logic here
-        // This is a placeholder function; you should replace it with your own logic
-        return 0;
+        uint256 stakedAmount = stakedBalances[user];
+    uint256 stakingTime = block.timestamp - stakedTimestamps[user]; // Calculate staking duration in seconds
+
+    // Calculate the annual interest rate as a decimal (7% = 0.07)
+    uint256 annualInterestRate = 7; // 7% annual interest
+    uint256 secondsInYear = 365 days; // Number of seconds in a year
+    uint256 rewardRate = annualInterestRate * stakingTime / secondsInYear;
+
+    // Calculate rewards
+    uint256 rewards = (stakedAmount * rewardRate) / 100; // Rewards as a percentage of the staked amount
+
+    return rewards;
     }
 }
